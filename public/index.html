@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>LaTeX Converter - Demo</title>
+
+  <!-- Tailwind for quick styling -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <!-- KaTeX CSS so server-rendered KaTeX HTML looks right -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+
+  <style>
+    .latex-content { color: #111; line-height: 1.6; }
+    .tab-button.active { color: #4F46E5; border-bottom-color: #4F46E5; }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <nav class="bg-white shadow-lg">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="text-xl font-bold">LaTeX Converter</div>
+      <div class="text-sm text-gray-600">Demo</div>
+    </div>
+  </nav>
+
+  <main class="max-w-5xl mx-auto p-6">
+    <div class="bg-white rounded-lg shadow p-6">
+      <h1 class="text-2xl font-semibold mb-4">Editor</h1>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div>
+          <textarea id="latex-input" placeholder="Paste Markdown + LaTeX here" class="w-full h-72 p-3 border rounded resize-y font-mono"></textarea>
+
+          <div class="flex justify-end mt-3 space-x-2">
+            <button id="open-rules" class="px-3 py-2 bg-white border rounded">Rule Settings</button>
+            <button id="reset-button" class="px-3 py-2 bg-red-50 border rounded hidden">Reset</button>
+            <button id="process-button" class="px-4 py-2 bg-indigo-600 text-white rounded" disabled>Process</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="border-b mb-3">
+            <nav class="flex space-x-4">
+              <button id="preview-tab" class="tab-button active py-2 px-1 border-b-2">Preview</button>
+              <button id="output-tab" class="tab-button py-2 px-1 hidden">Output</button>
+            </nav>
+          </div>
+
+          <div id="preview-content" class="p-4 bg-white border rounded min-h-[300px] overflow-auto">
+            <div id="latex-output" class="latex-content">Preview will appear here</div>
+          </div>
+
+          <div id="output-content" class="p-4 bg-white border rounded min-h-[300px] overflow-auto hidden">
+            <div class="flex justify-end mb-2">
+              <button id="copy-output" class="px-3 py-1 border rounded">Copy</button>
+            </div>
+            <div id="latex-raw-output" class="latex-content"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <h3 class="font-medium">Quick Reference</h3>
+        <div class="grid grid-cols-3 gap-2 mt-2">
+          <div class="p-2 bg-gray-50 rounded"><code>\boldsymbol{x}</code> — bold symbol</div>
+          <div class="p-2 bg-gray-50 rounded"><code>\mathbf{x}</code> — math bold</div>
+          <div class="p-2 bg-gray-50 rounded"><code>\mathrm{x}</code> — roman math</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Rules modal -->
+  <div id="rules-modal" class="fixed inset-0 bg-gray-800 bg-opacity-50 hidden items-center justify-center">
+    <div class="bg-white rounded-lg shadow p-6 w-11/12 md:w-3/4 lg:w-1/2">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-semibold">Find & Replace Rules</h3>
+        <button id="close-rules" class="text-gray-500">Close</button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3 mb-3">
+        <input id="findInput" placeholder="Find text..." class="p-2 border rounded" />
+        <input id="replaceInput" placeholder="Replace with..." class="p-2 border rounded" />
+      </div>
+      <div class="flex justify-end mb-4">
+        <button id="add-rule" class="px-3 py-2 bg-green-600 text-white rounded">Add Rule</button>
+      </div>
+
+      <div>
+        <h4 class="font-medium mb-2">Saved Rules</h4>
+        <div id="rules-list" class="space-y-2 max-h-48 overflow-auto"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Client-side DOMPurify -->
+  <script src="libs/purify.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
